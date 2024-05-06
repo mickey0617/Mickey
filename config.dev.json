@@ -1,7 +1,7 @@
 {
   "facebookAccount": {
-    "email": "fiantot27@gmail.com",
-    "password": "Rousseau@@@",
+    "email": "limuleackerman@gmail.com",
+    "password": "Abdallah2005",
     "2FASecret": "",
     "i_user": "",
     "proxy": null,
@@ -17,16 +17,16 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "100089877583784",
-    ""
+    "61555432404409",
+    "61551024657202"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "Rousseau |👨🏾‍🦯",
-  "prefix": "€",
+  "nickNameBot": "Obtimus Prime💥",
+  "prefix": ",",
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
