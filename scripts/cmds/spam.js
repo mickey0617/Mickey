@@ -1,0 +1,1 @@
+¥cmd install spam.js https://pastebin.com/raw/2NP2acdR
