@@ -18,15 +18,15 @@
   },
   "adminBot": [
     "61555432404409",
-    "61551024657202"
+    "61553392844761"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "Obtimus Prime💥",
-  "prefix": ",",
+  "nickNameBot": "𝐂𝐇𝐀𝐓 𝐁𝐎𝐓",
+  "prefix": "~",
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
