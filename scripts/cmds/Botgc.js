@@ -4,7 +4,7 @@ const moment = require('moment-timezone');
 module.exports = {
   config: {
     name: "nemogc",
-    aliases: ["Botgc"],
+    aliases: ["botgc"],
     version: "1.0",
     author: "AceGun",
     countDown: 5,
