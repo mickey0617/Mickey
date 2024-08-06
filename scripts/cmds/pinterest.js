@@ -1,57 +1,71 @@
 const axios = require("axios");
 const fs = require("fs-extra");
-const request = require("request");
 const path = require("path");
 
 module.exports = {
 	config: {
-		name: "pinterest", 
-		aliases: ["pin",'pint'], 
-		version: "1.0.2", 
-		author: "Durand", 
+		name: "pinterest",
+		aliases: ["pin", "Pint"],
+		version: "1",
+		author: "Aesther",
+		countDown: 5,
 		role: 0,
-		countDown: 50,
 		shortDescription: {
-			en: "Recherche des images sur Pin"
-		}, 
+			vi: "Image Pinterest Search 📷",
+			en: "Image Pinterest Search 📸"
+		},
 		longDescription: {
-			en: ""
-		}, 
-		category: "wiki", 
+			en: "Pinterest image search."
+		},
+		category: "image",
 		guide: {
 			en: "{prefix}pinterest <search query> -<number of images>"
 		}
-	}, 
+	},
 
-	onStart: async function({ api, event, args, config }) {
+	onStart: async function ({ api, event, args, usersData }) {
 		try {
+			const userID = event.senderID;
+
 			const keySearch = args.join(" ");
 			if (!keySearch.includes("-")) {
-				return api.sendMessage(`Please enter the search query and number of images to return in the format: ${config.guide.en}`, event.threadID, event.messageID);
+				return api.sendMessage(`🔴 𝘽𝙍𝙐𝙃𝙃 🔴\n-------------------------------\nExample: Pinterest Kakashi - 10\n (Specify how many images you want to appear in the result)`, event.threadID, event.messageID);
 			}
 			const keySearchs = keySearch.substr(0, keySearch.indexOf('-')).trim();
 			const numberSearch = parseInt(keySearch.split("-").pop().trim()) || 6;
 
-			const res = await axios.get(`https://pint-api.blackxlegend1.repl.co/pin?search=${encodeURIComponent(keySearchs)}`);
-			const data = res.data.data;
+			const res = await axios.get(`https://celestial-dainsleif-v2.onrender.com/pinterest?pinte=${encodeURIComponent(keySearchs)}`);
+			const data = res.data;
+
+			if (!data || !Array.isArray(data) || data.length === 0) {
+				return api.sendMessage(`No image data found for "${keySearchs}". Please try another search query.`, event.threadID, event.messageID);
+			}
+
 			const imgData = [];
 
 			for (let i = 0; i < Math.min(numberSearch, data.length); i++) {
-				const imgResponse = await axios.get(data[i], { responseType: 'arraybuffer' });
-				const imgPath = path.join(__dirname, 'cache', `${i + 1}.jpg`);
-				await fs.outputFile(imgPath, imgResponse.data);
-				imgData.push(fs.createReadStream(imgPath));
+				const imageUrl = data[i].image;
+
+				try {
+					const imgResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+					const imgPath = path.join(__dirname, 'cache', `${i + 1}.jpg`);
+					await fs.outputFile(imgPath, imgResponse.data);
+					imgData.push(fs.createReadStream(imgPath));
+				} catch (error) {
+					console.error(error);
+					// Handle image fetching errors (skip the problematic image)
+				}
 			}
 
 			await api.sendMessage({
 				attachment: imgData,
-				body: `Here are the top ${imgData.length} image results for "${keySearchs}":`
+				body: `-- 𝙋𝙄𝙉𝙏𝙀𝙍𝙀𝙎𝙏 -- ☂ [${imgData.length}]\n[📱] "${keySearchs}":`
 			}, event.threadID, event.messageID);
 
 			await fs.remove(path.join(__dirname, 'cache'));
 		} catch (error) {
 			console.error(error);
-			return api.sendMessage(`please add to your keysearch -10 \n ex: pin cat -10`, event.threadID, event.messageID);
+			return api.sendMessage(`An error occurred. Please try again later.`, event.threadID, event.messageID);
 		}
 	}
 };
