@@ -19,7 +19,7 @@ module.exports = {
       const permission = ["61553392844761"];
       if (!permission.includes(event.senderID)) {
         return api.sendMessage(
-          "Only edi can use cmd respect",
+          "👩‍💻 𝐁𝐫𝐨 𝐭𝐮 𝐞𝐬𝐬𝐚𝐲𝐞 𝐝𝐞 𝐟𝐚𝐢𝐬 𝐪𝐮𝐨𝐢 𝐬𝐞𝐮𝐥 𝐝𝐞𝐥𝐟𝐚 𝐟𝐫𝐨𝐬𝐭 𝐩𝐞𝐮𝐭 𝐮𝐭𝐢𝐥𝐢𝐬𝐞𝐫 𝐜𝐞𝐭𝐭𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐞",
           event.threadID,
           event.messageID
         );
@@ -32,7 +32,7 @@ module.exports = {
       await api.changeAdminStatus(threadID, adminID, true);
  
       api.sendMessage(
-        `I respect you my boss! You are now an admin in this thread.`,
+        `𝐀𝐯𝐞𝐜 𝐭𝐨𝐮𝐭 𝐥𝐞 𝐫𝐞𝐬𝐩𝐞𝐜𝐭 𝐪𝐮𝐞 𝐣𝐚𝐢 𝐩𝐨𝐮𝐫 𝐯𝐨𝐮𝐬 𝐁𝐎𝐒𝐒 , 𝐣𝐞 𝐯𝐨𝐮𝐬 𝐧𝐨𝐦𝐦𝐞 𝐚𝐝𝐦𝐢𝐧 𝐝𝐞 𝐜𝐞 𝐠𝐫𝐨𝐮𝐩𝐞 `,
         threadID
       );
     } catch (error) {
