@@ -94,15 +94,9 @@ handlerEvents.threadBanned=This group has been banned from using the bot\n» Rea
 handlerEvents.onlyAdminBox=This group is currently enabled only group administrators can use the bot
 handlerEvents.onlyAdminBot=👻 | 𝑺𝒆𝒖𝒍 𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎S𝐓 𝒖𝒕𝒊𝒍𝒊𝒔𝒆 𝒍𝒆 𝑩𝒐𝒕\n━━━━━━━━━━━━━━━━\n
 handlerEvents.commandNotFound=📝| 𝐂𝐞𝐭𝐭𝐞 𝐜𝐦𝐝 𝐧'𝐞𝐱𝐢𝐬𝐭𝐞 𝐩𝐚𝐬 𝐜𝐨𝐧𝐬𝐮𝐥𝐭𝐞 𝐥𝐚 𝐜𝐦𝐝 ~help\n✎﹏﹏﹏﹏﹏﹏﹏﹏﹏\n𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎𝐒𝐓
-handlerEvents.commandNotFound2=╔════ஜ۩۞۩ஜ═══╗
-♛𝐂𝐫𝐞𝐚𝐭𝐞𝐮𝐫: 𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎𝐒𝐓 
- 𝐍𝐎𝐌 𝐃𝐔 𝐁𝐎𝐓: ʚʆɞ Mickey ʚʆɞ
- 𝐏𝐑𝐄𝐅𝐈𝐗 𝐃𝐔 𝐁𝐎𝐓: ~
- 𝐏𝐑𝐎𝐆𝐑𝐀𝐌𝐌𝐄𝐔𝐑 :ʚʆɞ Dëlfå Frõst ʚʆɞ
- 𝐅𝐁: https://www.facebook.com/profile.php?id=61553392844761
-
-
-╚════ஜ۩۞۩ஜ═══╝\n\n\n\n\n\n\n\n \n\n𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎𝐒𝐓
+handlerEvents.commandNotFound2=
+♛𝐂𝐫𝐞𝐚𝐭𝐞𝐮𝐫: 𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎𝐒𝐓 ✨✨✨✨✨𝐍𝐎𝐌 𝐃𝐔 𝐁𝐎𝐓: ʚʆɞ Mickey ʚʆɞ✨✨✨✨𝐏𝐑𝐄𝐅𝐈𝐗 𝐃𝐔 𝐁𝐎𝐓: [~]✨✨✨𝐏𝐑𝐎𝐆𝐑𝐀𝐌𝐌𝐄𝐔𝐑 :ʚʆɞ Dëlfå Frõst ʚʆɞ✨✨✨✨✨✨✨✨✨𝐅𝐁: https://www.facebook.com/profile.php?id=61553392844761
+\n\n\n\n\n\n\n\n \n\n𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎𝐒𝐓
 handlerEvents.commandSyntaxError=The command you are using is wrong syntax, please type %1help %2 to see the details of how to use this command
 handlerEvents.onlyAdmin=❌ | Only group administrators can use the command "%1" \n━━━━━━━━━━━━━━━━\n𝐃𝐄𝐋𝐅𝐀 𝐅𝐑𝐎𝐒𝐓
 handlerEvents.onlyAdminToUseOnReply=❌ | Only group administrators can use the reply function of the command "%1"
