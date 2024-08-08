@@ -19,7 +19,7 @@ module.exports = {
     },
     category: "chat box",
     guide: {
-      en: "{pn}sandrinagc"
+      en: "{pn}botgc"
     }
   },
 
