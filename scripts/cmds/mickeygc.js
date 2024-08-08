@@ -1,4 +1,4 @@
- const fs = require('fs');
+const fs = require('fs');
 const moment = require('moment-timezone');
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, args }) {
-    const threadID = "8405743242791607";
+    const threadID = "6610915589004043";
 
     try {
       // Check if the user is already in the group chat
