@@ -197,7 +197,7 @@ function startFight(message, fight) {
   const attackList = ["kick", "punch", "slap", "forfeit"];
   
   message.send(
-    `${currentPlayer.name} has challenged ${opponent.name} to a duel!\n\n${currentPlayer.name} has ${currentPlayer.hp} HP, and ${opponent.name} has ${opponent.hp} HP.\n\nIt's ${currentPlayer.name}'s turn currently.\n\nAvailable attacks: ${attackList.join(', ')}`
+    `${currentPlayer.name}  𝐚 𝐝é𝐟𝐢é ${opponent.name} 𝐞𝐧 𝐝𝐮𝐞𝐥!\n\n${currentPlayer.name} 𝐚 ${currentPlayer.hp} 𝐇𝐩 𝐞𝐭 ${opponent.name} 𝐚 ${opponent.hp} 𝐇𝐏.\n\n 𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞  ${currentPlayer.name}'s turn currently.\n\n𝐀𝐭𝐭𝐚𝐪𝐮𝐞𝐬 𝐝𝐢𝐬𝐩𝐨𝐧𝐢𝐛𝐥𝐞𝐬: ${attackList.join(', ')}`
   );
 }
 
@@ -216,7 +216,7 @@ function startTimeout(threadID, message) {
       const loser = currentPlayer.hp > opponent.hp ? opponent : currentPlayer;
 
       message.send(
-        `⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner.name} 𝐚 𝐩𝐥𝐮𝐬 𝐝𝐞 𝐇𝐏, 𝐝𝐨𝐧𝐜 ${winner.name} 𝐠𝐚𝐠𝐧𝐞! ${loser.name} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`
+        `⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner.name} has more HP, so ${winner.name} 𝐠𝐚𝐠𝐧𝐞! ${loser.name} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`
       );
 
       // End the fight
