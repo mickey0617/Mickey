@@ -216,7 +216,7 @@ function startTimeout(threadID, message) {
       const loser = currentPlayer.hp > opponent.hp ? opponent : currentPlayer;
 
       message.send(
-        `⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner.name} has more HP, so ${winner.name} 𝐠𝐚𝐠𝐧𝐞! ${loser.name} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`
+        `⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner.name} 𝐚 𝐩𝐥𝐮𝐬 𝐝𝐞 𝐇𝐏, 𝐝𝐨𝐧𝐜 ${winner.name} 𝐠𝐚𝐠𝐧𝐞! ${loser.name} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`
       );
 
       // End the fight
