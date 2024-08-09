@@ -1,243 +1,241 @@
-const TIMEOUT_SECONDS = 120 ; // Durée du délai d'attente du jeu en secondes, à modifier selon les besoins
+const TIMEOUT_SECONDS = 120; // Game timeout duration in seconds, change as per need
 
-// Initialise une carte pour suivre les combats en cours par threadID
-const en coursFights = new Map();
-// Initialise une carte pour stocker les instances de jeu pour chaque paire
+// Initialize a Map to track ongoing fights by threadID
+const ongoingFights = new Map();
+// Initialize a Map to store game instances for each pair
 const gameInstances = new Map();
 
 module.exports = {
-  configuration : {
-    nom : "combat",
-    version : "1.0",
-    auteur : "Shikaki",
-    compte à rebours : 10,
-    rôle : 0,
-    courteDescription : {
-      vi : "",
-      fr: "Combattez avec vos amis !",
+  config: {
+    name: "fight",
+    version: "1.0",
+    author: "Shikaki",
+    countDown: 10,
+    role: 0,
+    shortDescription: {
+      vi: "",
+      en: "Fight with your friends!",
     },
-    longueDescription : {
-      vi : "",
-      fr: "Défiez vos amis dans un combat et voyez qui gagne !",
+    longDescription: {
+      vi: "",
+      en: "Challenge your friends to a fight and see who wins!",
     },
-    catégorie : "amusant",
-    guide : "{prefix}combat @mention",
+    category: "fun",
+    guide: "{prefix}fight @mention",
   },
 
-  onStart : fonction asynchrone ({ événement, message, api, usersData, args }) {
+  onStart: async function ({ event, message, api, usersData, args }) {
     const threadID = event.threadID;
 
-    // Vérifiez s'il y a déjà un combat en cours dans ce fil
+    // Check if there's already an ongoing fight in this thread
     if (ongoingFights.has(threadID)) {
-      return message.send("⚔ Un combat est déjà en cours dans ce groupe.");
+      return message.send("⚔️ A fight is already in progress in this group.");
     }
 
     const mention = Object.keys(event.mentions);
 
     if (mention.length !== 1) {
-      return message.send("🤔 Veuillez mentionner une personne avec qui commencer un combat.𝐕𝐞𝐮𝐢𝐥𝐥𝐞𝐳 𝐦𝐞𝐧𝐭𝐢𝐨𝐧𝐧𝐞𝐫 𝐮𝐧𝐞 𝐩𝐞𝐫𝐬𝐨𝐧𝐧𝐞 𝐚𝐯𝐞𝐜 𝐪𝐮𝐢 𝐜𝐨𝐦𝐦𝐞𝐧𝐜𝐞𝐫 𝐮𝐧 𝐜𝐨𝐦𝐛𝐚𝐭");
+      return message.send("🤔 𝐕𝐞𝐮𝐢𝐥𝐥𝐞𝐳 𝐦𝐞𝐧𝐭𝐢𝐨𝐧𝐧𝐞𝐫 𝐮𝐧𝐞 𝐩𝐞𝐫𝐬𝐨𝐧𝐧𝐞 𝐚𝐯𝐞𝐜 𝐪𝐮𝐢 𝐜𝐨𝐦𝐦𝐞𝐧𝐜𝐞𝐫 𝐮𝐧 𝐜𝐨𝐦𝐛𝐚𝐭 ⚔️ 🎮.");
     }
 
     const challengerID = event.senderID;
-    const IDadversaire = mention[0];
+    const opponentID = mention[0];
 
-    const challenger = wait usersData.getName(challengerID);
-    const adversaire = wait usersData.getName (opponentID);
+    const challenger = await usersData.getName(challengerID);
+    const opponent = await usersData.getName(opponentID);
 
-    // Crée une nouvelle instance de combat pour cette paire
-    combat const = {
-      participants : [],
-      joueur actuel : nul,
-      ID de fil : ID de fil,
-      startTime : null, // Stocke l'heure de début
-    } ;
+    // Create a new fight instance for this pair
+    const fight = {
+      participants: [],
+      currentPlayer: null,
+      threadID: threadID,
+      startTime: null, // Store the start time
+    };
 
-    combat.participants.push({
-      identifiant : challengerID,
-      nom : challenger,
-      hp : 100, // HP de démarrage
+    fight.participants.push({
+      id: challengerID,
+      name: challenger,
+      hp: 100, // Starting HP
     });
-    combat.participants.push({
-      identifiant : ID de l'adversaire,
-      nom : adversaire,
-      hp : 100, // HP de démarrage
+    fight.participants.push({
+      id: opponentID,
+      name: opponent,
+      hp: 100, // Starting HP
     });
 
-    // Crée une nouvelle instance de jeu pour cette paire
+    // Create a new game instance for this pair
     const gameInstance = {
-      combat : combat,
-      dernière attaque : nulle,
-      dernierJoueur : nul,
-      timeoutID : null, // Stocke l'ID du délai d'attente
-      turnMessageSent : false, // Gardez une trace de l'envoi du message de tour
-    } ;
+      fight: fight,
+      lastAttack: null,
+      lastPlayer: null,
+      timeoutID: null, // Store the timeout ID
+      turnMessageSent: false, // Keep track of whether the turn message was sent
+    };
 
-    // Détermine aléatoirement le premier joueur de la paire
-    gameInstance.fight.currentPlayer = Math.random() < 0,5 ? challengerID : adversaireID;
+    // Randomly determine the starting player within the pair
+    gameInstance.fight.currentPlayer = Math.random() < 0.5 ? challengerID : opponentID;
 
-    // Ajoute l'instance de jeu à la carte
+    // Add the game instance to the Map
     gameInstances.set(threadID, gameInstance);
 
-    // Commencer le combat pour cette paire
-    startFight(message, combat);
+    // Start the fight for this pair
+    startFight(message, fight);
 
-    // Démarre le timeout pour ce jeu
+    // Start the timeout for this game
     startTimeout(threadID, message);
   },
 
-  // Modifiez la fonction onChat comme suit :
-  onChat : fonction asynchrone ({événement, message}) {
+  // Modify the onChat function as follows:
+  onChat: async function ({ event, message }) {
     const threadID = event.threadID;
 
-    // Retrouvez le combat en cours pour ce fil
+    // Find the ongoing fight for this thread
     const gameInstance = gameInstances.get(threadID);
 
-    si (!gameInstance) retourne ;
+    if (!gameInstance) return;
 
     const currentPlayerID = gameInstance.fight.currentPlayer;
     const currentPlayer = gameInstance.fight.participants.find(
       (p) => p.id === currentPlayerID
     );
 
-    const attaque = event.body.trim().toLowerCase();
+    const attack = event.body.trim().toLowerCase();
 
-    // Vérifiez si l'expéditeur du message est l'un des joueurs actuels
+    // Check if the message sender is one of the current players
     const isCurrentPlayer = event.senderID === currentPlayerID;
 
-    // Vérifiez si l'adversaire a déjà attaqué
+    // Check if the opponent has attacked already
     if (gameInstance.lastAttack !== null && !isCurrentPlayer) {
-      // Informe le joueur actuel que c'est le tour de son adversaire
-      message.reply(`😒 C'est actuellement le tour de 𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞 ${currentPlayer.name}. Vous ne pouvez pas attaquer tant qu'ils n'ont pas bougé.𝐕𝐨𝐮𝐬 𝐧𝐞 𝐩𝐨𝐮𝐯𝐞𝐳 𝐩𝐚𝐬 𝐚𝐭𝐭𝐚𝐪𝐮𝐞𝐫 𝐭𝐚𝐧𝐭 𝐪𝐮'𝐢𝐥𝐬 𝐧'𝐨𝐧𝐭 𝐩𝐚𝐬 𝐛𝐨𝐮𝐠é`);
-      retour;
+      // Inform the current player that it's their opponent's turn
+      message.reply(`😒 𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞 ${currentPlayer.name}'s 𝐕𝐨𝐮𝐬 𝐧𝐞 𝐩𝐨𝐮𝐯𝐞𝐳 𝐩𝐚𝐬 𝐚𝐭𝐭𝐚𝐪𝐮𝐞𝐫 𝐭𝐚𝐧𝐭 𝐪𝐮'𝐢𝐥𝐬 𝐧'𝐨𝐧𝐭 𝐩𝐚𝐬 𝐛𝐨𝐮𝐠é.`);
+      return;
     }
 
-    // Vérifiez si l'adversaire essaie d'attaquer alors que ce n'est pas son tour
+    // Check if the opponent is trying to attack when it's not their turn
     if (!isCurrentPlayer && gameInstance.lastPlayer.id === event.senderID) {
-      message.send(`👎 C'est actuellement le tour de  ${currentPlayer.name}. Vous ne pouvez pas attaquer tant qu'ils n'ont pas fait un mouvement 𝐮𝐧 𝐦𝐨𝐮𝐯𝐞𝐦𝐞𝐧𝐭.`);
-      retour;
+      message.send(`👎 𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞 ${currentPlayer.name}'s 𝐕𝐨𝐮𝐬 𝐧𝐞 𝐩𝐨𝐮𝐯𝐞𝐳 𝐩𝐚𝐬 𝐚𝐭𝐭𝐚𝐪𝐮𝐞𝐫 𝐭𝐚𝐧𝐭 𝐪𝐮'𝐢𝐥𝐬 𝐧'𝐨𝐧𝐭 𝐩𝐚𝐬 𝐟𝐚𝐢𝐭 𝐝𝐞 𝐦𝐨𝐮𝐯𝐞𝐦𝐞𝐧𝐭`);
+      return;
     }
 
-    // Vérifiez si l'expéditeur du message n'est PAS l'un des joueurs actuels
-    si (!isCurrentPlayer) {
-      // Si ce n'est pas le tour du joueur actuel, prépare le message pour l'adversaire
-      si (!gameInstance.turnMessageSent) {
-        // Préparez le message, mais ne l'envoyez pas encore
-        const adverseName = gameInstance.fight.participants.find(p => p.id !== event.senderID).name;
-        const turnMessage = `C'est le tour de ${currentPlayer.name}.`;
+    // Check if the message sender is NOT one of the current players
+    if (!isCurrentPlayer) {
+      // If it's not the current player's turn, prepare the message for the opponent
+      if (!gameInstance.turnMessageSent) {
+        // Prepare the message, but don't send it yet
+        const opponentName = gameInstance.fight.participants.find(p => p.id !== event.senderID).name;
+        const turnMessage = `It's ${currentPlayer.name}'s turn.`;
         message.prepare(turnMessage, event.senderID);
 
-        // N'oubliez pas que le message de tour a été envoyé
-        gameInstance.turnMessageSent = true ;
+        // Remember that the turn message has been sent
+        gameInstance.turnMessageSent = true;
       }
-      retour;
+      return;
     }
 
-    // Vérifiez si l'adversaire a esquivé l'attaque
-    if (attaque === "forfait") {
+    // Check if the opponent dodged the attack
+    if (attack === "forfeit") {
       const forfeiter = currentPlayer.name;
-      const adversaire = gameInstance.fight.participants.find(
+      const opponent = gameInstance.fight.participants.find(
         (p) => p.id !== currentPlayerID
-      ).nom;
-      message.send(`🏃 ${forfeiter} déclare forfait ! ${opponent} gagne !`);
+      ).name;
+      message.send(`🏃 ${forfeiter} forfeits the match! ${opponent} wins!`);
       endFight(threadID);
-    } else if (["coup de pied", "coup de poing", "gifle"].includes(attaque)) {
-      // Calculer les dégâts (avec 10 % de chances de rater)
-      const dégâts = Math.random() < 0,1 ? 0 : Math.floor(Math.random() * 20 + 10);
+    } else if (["kick", "punch", "slap"].includes(attack)) {
+      // Calculate damage (with 10% chance to miss)
+      const damage = Math.random() < 0.1 ? 0 : Math.floor(Math.random() * 20 + 10);
 
-      // Appliquer des dégâts à l'adversaire
-      const adversaire = gameInstance.fight.participants.find((p) => p.id !== currentPlayerID);
-      adversaire.hp -= dégâts ;
+      // Apply damage to the opponent
+      const opponent = gameInstance.fight.participants.find((p) => p.id !== currentPlayerID);
+      opponent.hp -= damage;
 
-      // Afficher le message des dégâts infligés
-      message.envoyer(
-        `🥊 ${currentPlayer.name} attaque 𝐚𝐭𝐭𝐚𝐪𝐮𝐞 ${opponent.name} avec 𝐚𝐯𝐞𝐜 ${attack} et inflige 𝐞𝐭 𝐢𝐧𝐟𝐥𝐢𝐠𝐞 ${damage} dégâts 𝐝é𝐠â𝐭𝐬.\n\nMaintenant 𝐌𝐚𝐢𝐧𝐭𝐞𝐧𝐚𝐧𝐭, ${opponent.name} a 𝐚 ${opponent.hp} HP et 𝐇𝐏 𝐞𝐭 $ {currentPlayer.name} a 𝐚 ${currentPlayer.hp} HP.`
+      // Display damage dealt message
+      message.send(
+        `🥊 ${currentPlayer.name} 𝐚𝐭𝐭𝐚𝐪𝐮𝐞 ${opponent.name} 𝐚𝐯𝐞𝐜 ${attack} 𝐞𝐭 𝐢𝐧𝐟𝐥𝐢𝐠𝐞 ${damage} 𝐝é𝐠â𝐭𝐬.\n\n𝐌𝐚𝐢𝐧𝐭𝐞𝐧𝐚𝐧𝐭, ${opponent.name} 𝐚 ${opponent.hp}  𝐇𝐏 𝐞𝐭  ${currentPlayer.name} 𝐚 ${currentPlayer.hp} 𝐇𝐩.`
       );
 
-      // Vérifie si le jeu est terminé
-      si (adversaire.hp <= 0) {
-        const gagnant = currentPlayer.name;
-        const perdant = adversaire.nom;
-        message.send(`⏰ Le temps est écoulé ! Le jeu est terminé.𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é ! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner} 𝐠𝐚𝐠𝐧𝐞 ! ${loser} est vaincu.𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮`);
+      // Check if the game is over
+      if (opponent.hp <= 0) {
+        const winner = currentPlayer.name;
+        const loser = opponent.name;
+        message.send(`⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é ! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner} 𝐠𝐚𝐠𝐧𝐞! ${loser} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`);
         endFight(threadID);
-      } autre {
-        // Changer de tour au sein de la paire
+      } else {
+        // Switch turns within the pair
         gameInstance.fight.currentPlayer =
           currentPlayerID === gameInstance.fight.participants[0].id
             ? gameInstance.fight.participants[1].id
             : gameInstance.fight.participants[0].id;
         const newCurrentPlayer = gameInstance.fight.participants.find(p => p.id === gameInstance.fight.currentPlayer);
 
-        // Mise à jour de la dernière attaque et du joueur
-        gameInstance.lastAttack = attaque ;
+        // Update last attack and player
+        gameInstance.lastAttack = attack;
         gameInstance.lastPlayer = currentPlayer;
 
-        // Réinitialise l'état du message de virage
+        // Reset the turn message status
         gameInstance.turnMessageSent = false;
 
-        // Afficher à qui c'est maintenant le tour
-        message.send(`🥲 C'est actuellement le tour de ${newCurrentPlayer.name}.`);
+        // Display whose turn it is now
+        message.send(`🥲 It's ${newCurrentPlayer.name}'s turn currently.`);
       }
-    } autre {
-      message.réponse(
-        "❌ Attaque invalide 𝐀𝐭𝐭𝐚𝐪𝐮𝐞 𝐢𝐧𝐯𝐚𝐥𝐢𝐝𝐞! Utilisez 𝐔𝐭𝐢𝐥𝐢𝐬𝐞𝐳 'coup de pied', 'coup de poing', 'gifle' ou 'forfait'."
+    } else {
+      message.reply(
+        "❌ 𝐀𝐭𝐭𝐚𝐪𝐮𝐞 𝐯𝐚𝐥𝐢𝐝𝐞! 𝐮𝐭𝐢𝐥𝐬𝐞 'kick', 'punch', 'slap', or 'forfeit'."
       );
     }
   },
 
-} ;
+};
 
-// Fonction pour démarrer un combat
-function startFight(message, combat) {
-  en coursFights.set(fight.threadID, combat);
+// Function to start a fight
+function startFight(message, fight) {
+  ongoingFights.set(fight.threadID, fight);
 
-  const currentPlayer = combat.participants.find(p => p.id === combat.currentPlayer);
-  const adversaire = combat.participants.find(p => p.id !== combat.currentPlayer);
+  const currentPlayer = fight.participants.find(p => p.id === fight.currentPlayer);
+  const opponent = fight.participants.find(p => p.id !== fight.currentPlayer);
 
-  // Liste des attaques disponibles
-  const AttackList = ["coup de pied", "coup de poing", "gifle", "forfait"];
+  // List of available attacks
+  const attackList = ["kick", "punch", "slap", "forfeit"];
   
-  message.envoyer(
-    `${currentPlayer.name} a défié 𝐚 𝐝é𝐟𝐢é ${opponent.name} en duel 𝐞𝐧 𝐝𝐮𝐞𝐥 !\n\n${currentPlayer.name} a 𝐚 ${currentPlayer.hp} HP et 𝐇𝐩 𝐞𝐭 ${opponent.name} a 𝐚 ${opponent. hp} HP.\n\nC'est actuellement le tour de  𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞 ${currentPlayer.name}.\n\nAttaques disponibles 𝐀𝐭𝐭𝐚𝐪𝐮𝐞𝐬 𝐝𝐢𝐬𝐩𝐨𝐧𝐢𝐛𝐥𝐞𝐬: ${attackList.join(', ')}`
+  message.send(
+    `${currentPlayer.name} has challenged ${opponent.name} to a duel!\n\n${currentPlayer.name} has ${currentPlayer.hp} HP, and ${opponent.name} has ${opponent.hp} HP.\n\nIt's ${currentPlayer.name}'s turn currently.\n\nAvailable attacks: ${attackList.join(', ')}`
   );
 }
 
-// Fonction pour démarrer un timeout pour un jeu
-fonction startTimeout (threadID, message) {
+// Function to start a timeout for a game
+function startTimeout(threadID, message) {
   const timeoutID = setTimeout(() => {
     const gameInstance = gameInstances.get(threadID);
-    si (instance de jeu) {
+    if (gameInstance) {
       const currentPlayer = gameInstance.fight.participants.find(
         (p) => p.id === gameInstance.fight.currentPlayer
       );
-      const adversaire = gameInstance.fight.participants.find(
+      const opponent = gameInstance.fight.participants.find(
         (p) => p.id !== gameInstance.fight.currentPlayer
       );
-      const gagnant = currentPlayer.hp > adversaire.hp ? joueur actuel : adversaire ;
-      const perdant = currentPlayer.hp > adversaire.hp ? adversaire : joueur actuel ;
+      const winner = currentPlayer.hp > opponent.hp ? currentPlayer : opponent;
+      const loser = currentPlayer.hp > opponent.hp ? opponent : currentPlayer;
 
-      message.envoyer(
-        « Le temps est écoulé ! Le jeu est terminé. ${winner.name} a plus de HP, donc ${winner.name} gagne ! ${loser.name} est vaincu.`
+      message.send(
+        `⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner.name} has more HP, so ${winner.name} 𝐠𝐚𝐠𝐧𝐞! ${loser.name} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`
       );
 
-      // Fin du combat
+      // End the fight
       endFight(threadID);
     }
-  }, TIMEOUT_SECONDS * 1000); // Convertit les secondes en millisecondes
+  }, TIMEOUT_SECONDS * 1000); // Convert seconds to milliseconds
 
-  // Stocke l'ID du délai d'attente dans l'instance de jeu
+  // Store the timeout ID in the game instance
   gameInstances.get(threadID).timeoutID = timeoutID;
 }
 
-// Fonction pour mettre fin à un combat et nettoyer
-fonction endFight (threadID) {
-  en coursFights.delete(threadID);
-  // Efface le délai d'attente pour ce jeu
+// Function to end a fight and clean up
+function endFight(threadID) {
+  ongoingFights.delete(threadID);
+  // Clear the timeout for this game
   const gameInstance = gameInstances.get(threadID);
   if (gameInstance && gameInstance.timeoutID) {
     clearTimeout(gameInstance.timeoutID);
   }
-  // Supprime l'instance de jeu pour ce fil
+  // Remove the game instance for this thread
   gameInstances.delete(threadID);
 }
-
-🌐 Translate from en to fr
