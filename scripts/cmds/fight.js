@@ -35,7 +35,7 @@ module.exports = {
     const mention = Object.keys(event.mentions);
 
     if (mention.length !== 1) {
-      return message.send("🤔 Please mention one person to start a fight with.");
+      return message.send("🤔 𝐕𝐞𝐮𝐢𝐥𝐥𝐞𝐳 𝐦𝐞𝐧𝐭𝐢𝐨𝐧𝐧𝐞𝐫 𝐮𝐧𝐞 𝐩𝐞𝐫𝐬𝐨𝐧𝐧𝐞 𝐚𝐯𝐞𝐜 𝐪𝐮𝐢 𝐜𝐨𝐦𝐦𝐞𝐧𝐜𝐞𝐫 𝐮𝐧 𝐜𝐨𝐦𝐛𝐚𝐭 ⚔️.");
     }
 
     const challengerID = event.senderID;
@@ -107,13 +107,13 @@ module.exports = {
     // Check if the opponent has attacked already
     if (gameInstance.lastAttack !== null && !isCurrentPlayer) {
       // Inform the current player that it's their opponent's turn
-      message.reply(`😒 It's ${currentPlayer.name}'s turn currently. You can't attack until they make a move.`);
+      message.reply(`😒 𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞 ${currentPlayer.name}'s 𝐕𝐨𝐮𝐬 𝐧𝐞 𝐩𝐨𝐮𝐯𝐞𝐳 𝐩𝐚𝐬 𝐚𝐭𝐭𝐚𝐪𝐮𝐞𝐫 𝐭𝐚𝐧𝐭 𝐪𝐮'𝐢𝐥𝐬 𝐧'𝐨𝐧𝐭 𝐩𝐚𝐬 𝐛𝐨𝐮𝐠é.`);
       return;
     }
 
     // Check if the opponent is trying to attack when it's not their turn
     if (!isCurrentPlayer && gameInstance.lastPlayer.id === event.senderID) {
-      message.send(`👎 It's ${currentPlayer.name}'s turn currently. You can't attack until they make a move.`);
+      message.send(`👎 𝐂'𝐞𝐬𝐭 𝐚𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐭𝐨𝐮𝐫 𝐝𝐞 ${currentPlayer.name}'s 𝐕𝐨𝐮𝐬 𝐧𝐞 𝐩𝐨𝐮𝐯𝐞𝐳 𝐩𝐚𝐬 𝐚𝐭𝐭𝐚𝐪𝐮𝐞𝐫 𝐭𝐚𝐧𝐭 𝐪𝐮'𝐢𝐥𝐬 𝐧'𝐨𝐧𝐭 𝐩𝐚𝐬 𝐟𝐚𝐢𝐭 𝐝𝐞 𝐦𝐨𝐮𝐯𝐞𝐦𝐞𝐧𝐭`);
       return;
     }
 
@@ -150,14 +150,14 @@ module.exports = {
 
       // Display damage dealt message
       message.send(
-        `🥊 ${currentPlayer.name} attacks ${opponent.name} with ${attack} and deals ${damage} damage.\n\nNow, ${opponent.name} has ${opponent.hp} HP, and ${currentPlayer.name} has ${currentPlayer.hp} HP.`
+        `🥊 ${currentPlayer.name} 𝐚𝐭𝐭𝐚𝐪𝐮𝐞 ${opponent.name} 𝐚𝐯𝐞𝐜 ${attack} 𝐞𝐭 𝐢𝐧𝐟𝐥𝐢𝐠𝐞 ${damage} 𝐝é𝐠â𝐭𝐬.\n\n𝐌𝐚𝐢𝐧𝐭𝐞𝐧𝐚𝐧𝐭, ${opponent.name} 𝐚 ${opponent.hp}  𝐇𝐏 𝐞𝐭  ${currentPlayer.name} 𝐚 ${currentPlayer.hp} 𝐇𝐩.`
       );
 
       // Check if the game is over
       if (opponent.hp <= 0) {
         const winner = currentPlayer.name;
         const loser = opponent.name;
-        message.send(`⏰ Time's up! The game is over. ${winner} wins! ${loser} is defeated.`);
+        message.send(`⏰𝐋𝐞 𝐭𝐞𝐦𝐩𝐬 𝐞𝐬𝐭 é𝐜𝐨𝐮𝐥é ! 𝐋𝐞 𝐣𝐞𝐮 𝐞𝐬𝐭 𝐭𝐞𝐫𝐦𝐢𝐧é. ${winner} 𝐠𝐚𝐠𝐧𝐞! ${loser} 𝐞𝐬𝐭 𝐯𝐚𝐢𝐧𝐜𝐮.`);
         endFight(threadID);
       } else {
         // Switch turns within the pair
@@ -179,7 +179,7 @@ module.exports = {
       }
     } else {
       message.reply(
-        "❌ Invalid attack! Use 'kick', 'punch', 'slap', or 'forfeit'."
+        "❌ 𝐀𝐭𝐭𝐚𝐪𝐮𝐞 𝐯𝐚𝐥𝐢𝐝𝐞! 𝐮𝐭𝐢𝐥𝐬𝐞 'kick', 'punch', 'slap', or 'forfeit'."
       );
     }
   },
