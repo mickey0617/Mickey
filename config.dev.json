@@ -18,15 +18,14 @@
   },
   "adminBot": [
     "61553392844761",
-    "61561725772043",
-    "61563580892213"
+    "61561725772043"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "𝐂𝐇𝐀𝐓 𝐁𝐎𝐓",
+  "nickNameBot": "𝐃𝐞𝐥𝐟𝐚 𝐛𝐨𝐭 🤖",
   "prefix": "~",
   "database": {
     "type": "sqlite",
