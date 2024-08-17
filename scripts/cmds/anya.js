@@ -14,11 +14,11 @@ module.exports = {
 		category: 'funny',
 		guide: {
 			vi: '   {pn} [on | off]: bật/tắt simsimi'
-				+ '\'
-				+ '\   {pn} <word>: chat nhanh với simsimi'
-				+ '\   Ví dụ:\    {pn} hi',
+				+ '\n'
+				+ '\n   {pn} <word>: chat nhanh với simsimi'
+				+ '\n   Ví dụ:\n    {pn} hi',
 			en: '   {pn} <word>: chat with hina'
-				+ '\   Example:\    {pn} hi'
+				+ '\n   Example:\n    {pn} hi'
 		}
 	},
 
